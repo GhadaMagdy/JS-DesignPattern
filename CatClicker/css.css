@@ -1,0 +1,31 @@
+.catClickerContainer{
+    border: 1px solid blue;
+    height: 100%;
+}
+.divCatImg{
+width:100%;
+}
+.catImg{
+    width:100%;
+}
+.cat1{
+float: left;
+}
+.cat2{
+    float: right;
+}
+.ulCatList{
+    list-style: none;
+}
+.cat{
+    display: none;
+    border: 1px solid black;
+}
+.catList{
+
+   height: 100%;
+    
+}
+.active{
+    display: block;
+}
