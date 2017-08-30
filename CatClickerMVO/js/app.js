@@ -23,12 +23,14 @@ $(function () {
         init: function () {
             if(!localStorage.catList)
                 {
-                    localStorage.catList=this.catList;
+                    localStorage.catList=JSON.stringify(this.catList);
 
-                    return localStorage.catList;
+                    return JSON.parse(localStorage.catList);
                 }
             else{
-                return localStorage.catList;
+                console.log(JSON.parse(localStorage.catList));
+                this.catList=JSON.parse(localStorage.catList);
+                return JSON.parse(localStorage.catList);
             }
         }
 
@@ -103,7 +105,8 @@ $(function () {
     }
     var octopus = {
         init: function () {
-            model.currentCat = model.catList[0];
+            var list=model.init();
+            model.currentCat = list[0];
             catListView.init();
             catAreaView.init();
             var adminBtn = document.getElementsByClassName('btnAdmin')[0];
@@ -152,12 +155,13 @@ $(function () {
             var catNameValue = document.getElementsByName('catName')[0].value;
             var catImgValue = document.getElementsByName('catURL')[0].value;
             var catCounterVlaue = document.getElementsByName('catCounter')[0].value;
-            var index=model.catList.indexOf(model.currentCat.name);
+            var index=model.catList.findIndex(e=>e.name===model.currentCat.name);
+            console.log("index",index);
             model.currentCat.name=catNameValue;
             model.currentCat.img=catImgValue;
             model.currentCat.count=catCounterVlaue;
             model.catList[index]=model.currentCat;
-            localStorage.catList=model.catList;
+            localStorage.catList=JSON.stringify(model.catList);
 
             catListView.render();
             catAreaView.render();
