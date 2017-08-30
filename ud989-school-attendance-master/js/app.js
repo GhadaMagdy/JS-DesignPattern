@@ -20,6 +20,7 @@
             for (var i = 0; i <= 11; i++) {
                 attendance[name].push(getRandom());
             }
+            console.log(attendance[name]);
         });
 
         localStorage.attendance = JSON.stringify(attendance);
@@ -29,7 +30,9 @@
 
 /* STUDENT APPLICATION */
 $(function() {
-    var attendance = JSON.parse(localStorage.attendance),
+    var attendance = JSON.parse(localStorage.attendance);
+    console.log(attendance);
+    
         $allMissed = $('tbody .missed-col'),
         $allCheckboxes = $('tbody input');
 

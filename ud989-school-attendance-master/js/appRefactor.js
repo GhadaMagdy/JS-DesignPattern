@@ -4,27 +4,27 @@ $(function () {
         [
             {
                 name: 'Slappy the Frog',
-                daysMissdCalls: 0
+                daysMissd: 12
 
             },
             {
                 name: 'Lilly the Lizard',
-                daysMissdCalls: 0
+                daysMissd: 12
 
             },
             {
                 name: 'Paulrus the Walrus',
-                daysMissdCalls: 0
+                daysMissd: 12
 
             },
             {
                 name: 'Gregory the Goat',
-                daysMissdCalls: 0
+                daysMissd: 12
 
             },
             {
                 name: 'Adam the Anaconda',
-                daysMissdCalls: 0
+                daysMissd: 12
 
             },
         ],
@@ -62,7 +62,7 @@ $(function () {
     var studentsView = {
         init: function () {
             this.studentList = octopus.getStudents();
-            this.dayNo=octopus.getDayes();
+            this.dayNo = octopus.getDayes();
             this.tableBody = document.getElementById('tableBody');
             this.render();
 
@@ -70,34 +70,44 @@ $(function () {
         },
         render: function () {
             debugger;
+            this.tableBody.innerHTML='';
             for (var i = 0; i < this.studentList.length; i++) {
-                var student=this.studentList[i];
-                var tr=document.createElement('tr');
-                tr.className="student";
-                var tdName=document.createElement('td');
-                tdName.className="name-col";
-                tdName.innerHTML=student.name;
+                var student = this.studentList[i];
+                var tr = document.createElement('tr');
+                tr.className = "student";
+                var tdName = document.createElement('td');
+                tdName.className = "name-col";
+                tdName.innerHTML = student.name;
                 tr.appendChild(tdName);
                 for (var j = 0; j < this.dayNo; j++) {
-                    var td=document.createElement('td');
-                    td.className="attend-col";
-                    var checkbox=document.createElement('input');
-                    checkbox.type="checkbox";
+                    var td = document.createElement('td');
+                    td.className = "attend-col";
+                    var checkbox = document.createElement('input');
+                    checkbox.type = "checkbox";
+                    checkbox.addEventListener('click',(function(_student){
+                       return function(){
+                        if(this.checked){
+                            octopus.upadteDayMissed(_student);
+                         }
+
+                       } 
+                    })(student));
                     td.appendChild(checkbox);
                     tr.appendChild(td);
                 }
-                var tdMissdCalls=document.createElement('td');
-                tdMissdCalls.className="missed-col";
-                tdMissdCalls.innerHTML=student.daysMissdCalls;
+                var tdMissdCalls = document.createElement('td');
+                tdMissdCalls.className = "missed-col";
+                tdMissdCalls.innerHTML = student.daysMissd;
                 tr.appendChild(tdMissdCalls);
                 this.tableBody.appendChild(tr);
-                    
+
             }
 
         }
     }
     var octopus = {
         init: function () {
+            var students = octopus.getStudents();
             tableHeaderView.init();
             studentsView.init();
 
@@ -107,7 +117,19 @@ $(function () {
         },
         getStudents: function () {
             return model.students;
+        },
+        getRandom: function () {
+            return (Math.random() >= 0.5);
+        },
+        upadteDayMissed:function(_student){
+            debugger;
+            _student.daysMissd-=1;
+            var index=model.students.findIndex(s=>s.name==_student.name);
+            model.students[index]=_student;
+            localStorage.students=JSON.stringify(model.students);
+            studentsView.render();
         }
-    };
+        
+    }
     octopus.init();
 });
