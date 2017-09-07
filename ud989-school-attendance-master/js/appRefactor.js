@@ -4,31 +4,56 @@ $(function () {
         [
             {
                 name: 'Slappy the Frog',
-                daysMissd: 12
+                daysMissd: 12,
+                checkeddayes: []
 
             },
             {
                 name: 'Lilly the Lizard',
-                daysMissd: 12
+                daysMissd: 12,
+                checkeddayes: []
 
             },
             {
                 name: 'Paulrus the Walrus',
-                daysMissd: 12
+                daysMissd: 12,
+                checkeddayes: []
 
             },
             {
                 name: 'Gregory the Goat',
-                daysMissd: 12
+                daysMissd: 12,
+                checkeddayes: []
 
             },
             {
                 name: 'Adam the Anaconda',
-                daysMissd: 12
+                daysMissd: 12,
+                checkeddayes: []
 
             },
         ],
-        numOfDayes: 12
+        numOfDayes: 12,
+        fillCheckedDay: function () {
+            for (var i = 0; i < student; i++) {
+                for (var j = 0; j < numOfDayes; j++) {
+                    student[i].checkeddayes.push(false);
+
+                }
+
+            }
+        },
+        getStudentList:function(){
+            if(localStorage.students){
+                model.students=JSON.parse(localStorage.students);
+                
+            }
+            else{
+                localStorage.students=JSON.stringify(model.students);
+                
+            }
+            return model.students;
+        }
 
 
     };
@@ -70,7 +95,7 @@ $(function () {
         },
         render: function () {
             debugger;
-            this.tableBody.innerHTML='';
+            this.tableBody.innerHTML = '';
             for (var i = 0; i < this.studentList.length; i++) {
                 var student = this.studentList[i];
                 var tr = document.createElement('tr');
@@ -84,14 +109,18 @@ $(function () {
                     td.className = "attend-col";
                     var checkbox = document.createElement('input');
                     checkbox.type = "checkbox";
-                    checkbox.addEventListener('click',(function(_student){
-                       return function(){
-                        if(this.checked){
-                            octopus.upadteDayMissed(_student);
-                         }
+                    checkbox.addEventListener('click', (function (dayNo, _student) {
+                        return function () {
+                            if (this.checked) {
+                                octopus.upadteDayMissed(dayNo, _student);
+                            }
 
-                       } 
-                    })(student));
+                        }
+                    })(j, student));
+                    if(student.checkeddayes[j]===true)
+                        {
+                            checkbox.checked=true;
+                        }
                     td.appendChild(checkbox);
                     tr.appendChild(td);
                 }
@@ -116,20 +145,21 @@ $(function () {
             return model.numOfDayes;
         },
         getStudents: function () {
-            return model.students;
+            return model.getStudentList();
         },
         getRandom: function () {
             return (Math.random() >= 0.5);
         },
-        upadteDayMissed:function(_student){
+        upadteDayMissed: function (dayNo, _student) {
             debugger;
-            _student.daysMissd-=1;
-            var index=model.students.findIndex(s=>s.name==_student.name);
-            model.students[index]=_student;
-            localStorage.students=JSON.stringify(model.students);
+            _student.daysMissd -= 1;
+            _student.checkeddayes[dayNo]=true;
+            var index = model.students.findIndex(s => s.name == _student.name);
+            model.students[index] = _student;
+            localStorage.students = JSON.stringify(model.students);
             studentsView.render();
         }
-        
+
     }
     octopus.init();
 });
