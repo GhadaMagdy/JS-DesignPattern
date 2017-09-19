@@ -81,9 +81,38 @@ $(function () {
         init:function(){
 
         },
-        getData:function(){}
+        getBioData:function(){
+            return model.bio;
 
-    }
+        },
+        getEducationData :function(){
+            return model.education;
+        },
+        getWorkData :function(){
+            return model.work;
+        },
+        getProjectsData :function(){
+            return model.projects;
+        }
+        
+        
+
+    };
+   var resumeView={
+       init:function(){
+           this.contacts=octopus.getBioData();
+           this.education=octopus.getEducationData();
+           this.work=octopus.getWorkData();
+           this.projects=octopus.getProjectsData();
+
+           this.contactsTemplate=$('#topContacts');
+           this.render();
+       },
+       render:function(){
+
+       }
+
+   } 
 
      
 });
