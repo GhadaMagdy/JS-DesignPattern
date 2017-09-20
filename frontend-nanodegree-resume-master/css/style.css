@@ -206,7 +206,13 @@ span {
   height: 100%;
   margin: 0 5%;
 }
+.role{
+  font-weight: bold;
+}
 
+#skills{
+  list-style: none;
+}
 #mapDiv {
   height: 400px;
   width: 100%;
